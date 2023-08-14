@@ -1,0 +1,1 @@
+![Quantum Decision Logo](static/assets/logodisplay.png)
