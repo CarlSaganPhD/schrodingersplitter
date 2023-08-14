@@ -29,10 +29,6 @@ def get_quantum_number():
 def home():
     return render_template('main.html')
 
-@app.route('/2', methods=['GET'])
-def home2():
-    return render_template('home2.html')
-
 @app.route('/about', methods=['GET'])
 def about():
     return render_template('about.html')
