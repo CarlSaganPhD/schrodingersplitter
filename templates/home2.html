@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
     .full-height {
@@ -38,6 +39,12 @@ img.img-fluid {
     width: 70%; /* Adjust this value according to your needs */
     margin: 10px 0;
 }
+}
+
+#decisionResultCard {
+    opacity: 0;
+    transition: opacity 1s ease-out;  /* 1s is the duration, you can adjust this */
+    pointer-events: none;  /* This ensures that the div isn't clickable when invisible */
 }
     </style>
 </head>
@@ -88,7 +95,7 @@ img.img-fluid {
     <div class="container mt-5">
 
         <!-- Logo -->
-        <div class="row">
+        <div data-aos="fade-down" class="row">
             <div class="col-12 text-center">
               <img src="{{ url_for('static', filename='assets/logo1.png') }}" alt="Quantum Decision Logo" class="img-fluid mx-auto d-block" style="height: 150px; width: auto;">
               <img src="{{ url_for('static', filename='assets/textlogo.png') }}" alt="Quantum Decision Logo" class="img-fluid mx-auto d-block" style="height: 100px; width: auto;">
@@ -102,12 +109,12 @@ img.img-fluid {
 
         <form id="choice-form">
           <!-- Text Entry Fields -->
-          <div class="row">
+          <div data-aos="fade-right" class="row">
               <!-- First Choice Card -->
               <div class="col-md-6 mb-3">
                   <div class="card shadow">
-                      <div class="card-body">
-                          <div class="form-group">
+                      <div  class="card-body">
+                          <div data-aos="fade-right" class="form-group">
                               <label for="firstChoice">First Choice:</label>
                               <input type="text" class="form-control" id="firstChoice" placeholder="Enter first choice" required>
                           </div>
@@ -127,12 +134,12 @@ img.img-fluid {
                   </div>
               </div>
           </div>
-          <button type="submit" class="btn btn-primary mt-3" id="submit-btn" disabled>Decide!</button>
+          <button data-aos="fade-right" type="submit" class="btn btn-primary mt-3" id="submit-btn" disabled>Decide!</button>
       </form>
       <br>
       <br>
-      <div class="card mb-3 shadow" style="display: none;" id="decisionResultCard">
-        <div class="card-header">
+      <div data-aos="fade-up" class="card mb-3 shadow" id="decisionResultCard">
+        <div data-aos="fade-right" class="card-header">
             <h5 class="card-title">Decision Result</h5>
         </div>
         <div class="card-body">
@@ -172,7 +179,7 @@ img.img-fluid {
                       $('#result').html('<h3>' + decision + '</h3>');
                       
                       // Show the decision result card
-                      $('#decisionResultCard').css('display', 'block');
+                      $('#decisionResultCard').css('opacity', '1').css('pointer-events', 'auto');
                   } else {
                       $('#result').html('<h3>Error: ' + data.message + '</h3>');
                   }
@@ -185,5 +192,8 @@ img.img-fluid {
       });
   });
 </script>
-
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 </body>
