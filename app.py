@@ -18,7 +18,7 @@ def get_quantum_number():
             'quantum_number': data['data'][0]
         }), 200
     except requests.RequestException as e:
-        # Generate a random number between 0 and 255 (inclusive) when the API call fails
+        # Generate a random number between 0 and 255 (inclusive) when the API call fails (😜 not truly random here folks. TODO: add API retry so that it attempts like 3-4 times before reverting to non-quantum randomness)
         rand_number = random.randint(0, 255)
         return jsonify({
             'status': 'success',  # Change status to success since we're providing a valid response
