@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-padding">
+<!-- Logo -->
+       <div data-aos="fade-down" class="row">
+        <div class="col-12 text-center">
+          <img src="{{ url_for('static', filename='assets/logo1.png') }}" alt="Quantum Decision Logo" class="img-fluid mx-auto d-block" style="height: 150px; width: auto;">
+          <img src="{{ url_for('static', filename='assets/textlogo.png') }}" alt="Quantum Decision Logo" class="img-fluid mx-auto d-block" style="height: 100px; width: auto;">
+          <br>
+          <img src="{{ url_for('static', filename='assets/sublogo.png') }}" alt="Quantum Decision Logo" class="img-fluid mx-auto d-block" style="height: 25px; width: auto;">
+          <br>
+          <br>
+          <br>
+        </div>
+    </div>
+
+    <form id="choice-form">
+      <!-- Text Entry Fields -->
+      <div data-aos="fade-right" class="row">
+          <!-- First Choice Card -->
+          <div class="col-md-6 mb-3">
+              <div class="card shadow">
+                  <div  class="card-body">
+                      <div data-aos="fade-right" class="form-group">
+                          <label for="firstChoice">First Choice:</label>
+                          <input type="text" class="form-control" id="firstChoice" placeholder="Enter first choice" required>
+                      </div>
+                  </div>
+              </div>
+          </div>
+  
+          <!-- Second Choice Card -->
+          <div class="col-md-6 mb-3">
+              <div class="card shadow">
+                  <div class="card-body">
+                      <div class="form-group">
+                          <label for="secondChoice">Second Choice:</label>
+                          <input type="text" class="form-control" id="secondChoice" placeholder="Enter second choice" required>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <button data-aos="fade-right" type="submit" class="btn btn-primary mt-3" id="submit-btn" disabled>Decide!</button>
+  </form>
+  <br>
+  <br>
+  <div data-aos="fade-up" class="card mb-3 shadow" id="decisionResultCard">
+    <div data-aos="fade-right" class="card-header">
+        <h5 class="card-title">Decision Result</h5>
+    </div>
+    <div class="card-body">
+        <div id="result"></div>
+    </div>
+</div>
+</div>
+{% endblock %}

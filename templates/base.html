@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Decision</title>
+    <!-- Including Bootstrap CSS and JS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+
+    <style>
+        
+    .full-height {
+        min-height: 100vh;
+    }
+
+    #sidebar {
+        min-height: 100%;
+    }
+
+    .card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.sidebar-card:first-child {
+    margin-top: 20px; /* Adjust the value as needed */
+}
+
+
+.sidebar-card {
+    background-color: #43474a;
+    color: #fff; /* Assuming you want white text on the dark background */
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.sidebar-card:hover {
+    background-color: #595e61;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about-content{
+    padding-top:50px;
+}
+
+    @media (min-width:767.98px){
+        .content-padding {
+    padding: 100px;  /* Adjust as per your design needs */
+    }
+}
+
+
+    /* Mobile view (smaller than medium devices) */
+@media (max-width: 767.98px) {
+
+/* Make sidebar full width */
+#sidebar {
+    width: 100%;
+}
+
+/* Adjust padding and margin for main content */
+main {
+    padding: 25px 20px;
+}
+
+.content-padding {
+    padding: 20px 15px;
+}
+
+/* Adjust logo size */
+img.img-fluid {
+    height: auto;
+    width: 70%; /* Adjust this value according to your needs */
+    margin: 10px 0;
+}
+}
+
+#decisionResultCard {
+    opacity: 0;
+    transition: opacity 1s ease-out;  /* 1s is the duration, you can adjust this */
+    pointer-events: none;  /* This ensures that the div isn't clickable when invisible */
+}
+    </style>
+</head>
+<body>
+
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Quantum Decision Maker</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <!-- You can add more nav items here if needed -->
+      </ul>
+      
+      <!-- GitHub Link -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/CarlSaganPhD/schrodingersplitter" target="_blank">
+            <i class="fab fa-github"></i> GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+
+<div class="container-fluid full-height">
+  <div class="row full-height">
+    <!-- SIDEBAR -->
+    <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+      <div class="position-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="/" class="card-link">
+                    <div class="card mb-3 sidebar-card">
+                        <div class="card-body">
+                            Home
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/about" class="card-link">
+                    <div class="card mb-3 sidebar-card">
+                        <div class="card-body">
+                            About
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+      </div>
+    </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-body">
+              <p>📡 Contacting the Australian National University quantum computer...</p>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<script>
+    $(document).ready(function(){
+        // Enable/disable the button based on the input fields
+        $('#choice-form input').on('input', function() {
+            const firstChoice = $('#firstChoice').val();
+            const secondChoice = $('#secondChoice').val();
+            $('#submit-btn').prop('disabled', !(firstChoice && secondChoice));
+        });
+  
+        // Handle the form submission
+        $('#choice-form').submit(function(event) {
+            event.preventDefault();
+  
+            // Show the loading modal
+            $('#loadingModal').modal('show');
+  
+            // Call the Flask endpoint to get the quantum number
+            $.ajax({
+                url: '/quantum-number',
+                method: 'GET',
+                success: function(data) {
+                    $('#loadingModal').modal('hide'); // Hide the modal
+                    if(data.status === 'success') {
+                        const quantumNumber = data.quantum_number;
+                        let decision = quantumNumber % 2 === 0 ? $('#firstChoice').val() : $('#secondChoice').val();
+                        $('#result').html('<h3>' + decision + '</h3>');
+                        
+                        // Show the decision result card
+                        $('#decisionResultCard').css('opacity', '1').css('pointer-events', 'auto');
+                    } else {
+                        $('#result').html('<h3>Error: ' + data.message + '</h3>');
+                    }
+                },
+                error: function() {
+                    $('#loadingModal').modal('hide'); // Hide the modal on error
+                    $('#result').html('<h3>Error: Failed to make a decision.</h3>');
+                }
+            });
+        });
+    });
+  </script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  </body>

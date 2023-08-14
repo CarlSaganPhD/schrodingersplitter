@@ -27,11 +27,15 @@ def get_quantum_number():
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('home2.html')
+    return render_template('main.html')
 
 @app.route('/2', methods=['GET'])
 def home2():
     return render_template('home2.html')
+
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
