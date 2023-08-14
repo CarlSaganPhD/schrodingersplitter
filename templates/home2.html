@@ -18,6 +18,27 @@
     #sidebar {
         min-height: 100%;
     }
+
+    /* Mobile view (smaller than medium devices) */
+@media (max-width: 767.98px) {
+
+/* Make sidebar full width */
+#sidebar {
+    width: 100%;
+}
+
+/* Adjust padding and margin for main content */
+main {
+    padding: 20px 15px;
+}
+
+/* Adjust logo size */
+img.img-fluid {
+    height: auto;
+    width: 70%; /* Adjust this value according to your needs */
+    margin: 10px 0;
+}
+}
     </style>
 </head>
 <body>
@@ -108,8 +129,17 @@
           </div>
           <button type="submit" class="btn btn-primary mt-3" id="submit-btn" disabled>Decide!</button>
       </form>
-      
-      <div id="result" class="mt-3"></div>
+      <br>
+      <br>
+      <div class="card mb-3 shadow" style="display: none;" id="decisionResultCard">
+        <div class="card-header">
+            <h5 class="card-title">Decision Result</h5>
+        </div>
+        <div class="card-body">
+            <div id="result"></div>
+        </div>
+    </div>
+</div>
     </div>
 </main>
   </div>
@@ -139,7 +169,10 @@
                   if(data.status === 'success') {
                       const quantumNumber = data.quantum_number;
                       let decision = quantumNumber % 2 === 0 ? $('#firstChoice').val() : $('#secondChoice').val();
-                      $('#result').html('<h3>Decision: ' + decision + '</h3>');
+                      $('#result').html('<h3>' + decision + '</h3>');
+                      
+                      // Show the decision result card
+                      $('#decisionResultCard').css('display', 'block');
                   } else {
                       $('#result').html('<h3>Error: ' + data.message + '</h3>');
                   }
@@ -152,4 +185,5 @@
       });
   });
 </script>
+
 </body>
